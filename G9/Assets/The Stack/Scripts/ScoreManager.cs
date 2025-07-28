@@ -1,4 +1,5 @@
-﻿using System;
+﻿using G9.Const;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,6 @@ namespace G9.MiniGame.TheStack
 {
     public class ScoreManager
     {
-        public const string BestScoreKey = "TheStack_BestScore";
-        public const string BestComboKey = "TheStack_BestCombo";
 
         public int BestScore { get; private set; }
         public int BestCombo { get; private set; }
@@ -18,8 +17,8 @@ namespace G9.MiniGame.TheStack
         public ScoreManager() 
         {
             // 저장된 데이터 불러오기 변경하기
-            BestScore = PlayerPrefs.GetInt(BestScoreKey, 0);
-            BestCombo = PlayerPrefs.GetInt(BestComboKey, 0);
+            BestScore = PlayerPrefs.GetInt(ConstValues.TheStack_BestScore, 0);
+            BestCombo = PlayerPrefs.GetInt(ConstValues.TheStack_BestCombo, 0);
         }
 
         // 최고 점수 갱신
@@ -30,8 +29,8 @@ namespace G9.MiniGame.TheStack
             if(BestCombo < currentCombo)
                 BestCombo = currentCombo;
 
-            PlayerPrefs.SetInt(BestScoreKey, BestScore);
-            PlayerPrefs.SetInt(BestComboKey, BestCombo);
+            PlayerPrefs.SetInt(ConstValues.TheStack_BestScore, BestScore);
+            PlayerPrefs.SetInt(ConstValues.TheStack_BestCombo, BestCombo);
         }
     }
 }

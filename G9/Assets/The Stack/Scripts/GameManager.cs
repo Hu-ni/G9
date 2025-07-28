@@ -1,4 +1,7 @@
-﻿using System;
+﻿using G9.Const;
+using G9.Game.LeaderBoard;
+using G9.Game.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +19,7 @@ namespace G9.MiniGame.TheStack
 
         // Const Value
         private const float BoundSize = 3.5f;
-        private const float MovingBoundsSize = 3f;  // Move에서만 사용
         private const float StackMovingSpeed = 5.0f;    //Move에서만 사용
-        private const float BlockMovingSpeed = 3.5f;    //Move에서만 사용
-        private const float ErrorMargin = 0.1f;
 
         [SerializeField]
         private GameObject _originBlock = null;
@@ -35,9 +35,6 @@ namespace G9.MiniGame.TheStack
         private int _stackCount = -1;
 
         public int Score { get { return _stackCount; } }
-
-        private const string BestScoreKey = "BestScore";
-        private const string BestComboKey = "BestCombo";
 
         //public Color prevColor;
         //public Color nextColor;
@@ -205,6 +202,34 @@ namespace G9.MiniGame.TheStack
 
             SpawnBlock();
             SpawnBlock();
+        }
+
+        public void SaveLeaderBoardData()
+        {
+            var entry = new LeaderBoardEntry
+            {
+                playerName = "Test",
+                score = Score,
+                //playTime = currentPlayTime,
+                timestamp = System.DateTime.Now.ToString("s"),
+                extraData = new Dictionary<string, string>
+                {
+                    { "maxCombo", MaxCombo.ToString() }
+                }
+            };
+
+            // 기존 랭킹 읽기
+            var leaderboard = LeaderboardFileUtil.LoadLeaderboard(ConstValues.TheStack);
+
+            // 기록 추가 + 정렬
+            leaderboard.entries.Add(entry);
+            leaderboard.entries = leaderboard.entries
+                .OrderByDescending(e => e.score)
+                .Take(100)
+                .ToList();
+
+            // 파일로 저장
+            LeaderboardFileUtil.SaveLeaderBoard(ConstValues.TheStack, leaderboard);
         }
     }
 }

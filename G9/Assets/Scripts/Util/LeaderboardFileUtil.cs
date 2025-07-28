@@ -12,7 +12,7 @@ namespace G9.Game.Util
 {
     public static class LeaderboardFileUtil
     {
-
+ 
         // 파일 저장 (gameId별로 분리)
         public static void SaveLeaderBoard(string gameId, LeaderBoardData leaderBoard)
         {
